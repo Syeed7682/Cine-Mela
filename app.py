@@ -250,10 +250,7 @@ html, body, [class*="css"] {
 
 /* ── Controls Panel ── */
 .controls-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px 28px;
+  padding: 10px 0;
   margin-bottom: 2rem;
 }
 
@@ -292,20 +289,27 @@ html, body, [class*="css"] {
   text-transform: uppercase !important;
   color: var(--muted) !important;
 }
-.stSelectbox > div > div, .stMultiSelect > div > div {
-  background: var(--surface2) !important;
-  border: 1px solid var(--border) !important;
+div[data-baseweb="select"] > div {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
   border-radius: 10px !important;
 }
+div[data-baseweb="select"] * {
+  color: #1b1e1f !important;
+}
 .stTextInput > div > div > input {
-  background: var(--surface2) !important;
-  border: 1px solid var(--border) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
   border-radius: 10px !important;
-  color: var(--text) !important;
+  color: #1b1e1f !important;
+}
+.stTextInput > div > div > input::placeholder {
+  color: #7A7A8C !important;
 }
 .stTextInput > div > div > input:focus {
   border-color: var(--red) !important;
   box-shadow: 0 0 0 2px var(--red-dim) !important;
+  background-color: #ffffff !important;
 }
 div[data-testid="stMetric"] {
   background: var(--surface);

@@ -21,11 +21,11 @@ packages = ['kagglehub', 'scikit-learn', 'pandas', 'numpy', 'scipy', 'gym', 'mat
 for package in packages:
     try:
         __import__(package)
-        print(f'✅ {package} is already installed')
+        print(f' {package} is already installed')
     except ImportError:
-        print(f'📦 Installing {package}...')
+        print(f' Installing {package}...')
         subprocess.check_call([sys.executable, "-m", "pip", "install", package, "-q"])
-        print(f'✅ {package} installed')
+        print(f' {package} installed')
 
 print('\n' + '='*70)
 print('All required packages are ready!')
@@ -50,7 +50,7 @@ warnings.filterwarnings('ignore')
 sns.set_style('whitegrid')
 plt.rcParams['figure.figsize'] = (14, 6)
 
-print('✅ All imports successful!')
+print(' All imports successful!')
 
 """---
 ## SECTION 2: NETFLIX DATASET LOADING
@@ -63,19 +63,19 @@ print('   (This may take a moment on first run)\n')
 
 try:
     path = kagglehub.dataset_download('shivamb/netflix-shows')
-    print(f'✅ Dataset downloaded successfully!')
-    print(f'📁 Path: {path}')
+    print(f' Dataset downloaded successfully!')
+    print(f' Path: {path}')
     dataset_available = True
 except Exception as e:
     print(f'Note: {e}')
-    print('\n💡 We will create a sample Netflix dataset for demonstration')
+    print('\n We will create a sample Netflix dataset for demonstration')
     dataset_available = False
     path = None
 
 import os
 
 if dataset_available and path:
-    print('\n📂 Files in dataset:')
+    print('\n Files in dataset:')
     files_list = os.listdir(path)
     for file in files_list:
         file_path = os.path.join(path, file)
@@ -83,7 +83,7 @@ if dataset_available and path:
         print(f'   - {file} ({file_size:.2f} MB)')
 
     csv_files = [f for f in files_list if f.endswith('.csv')]
-    print(f'\n✅ Found {len(csv_files)} CSV file(s)')
+    print(f'\n Found {len(csv_files)} CSV file(s)')
 else:
     print('Creating sample Netflix dataset...')
 
@@ -113,13 +113,13 @@ else:
         'listed_in': [', '.join(np.random.choice(['Drama', 'Comedy', 'Action', 'Romance', 'Thriller', 'Sci-Fi'], 2)) for _ in range(n_movies)]
     })
 
-print(f'✅ Dataset loaded!')
+print(f' Dataset loaded!')
 print(f'\nDataset Shape: {netflix_df.shape}')
 print(f'\nFirst few rows:')
 print(netflix_df.head())
 
 # Create user ratings
-print('📊 Creating user ratings data...\n')
+print(' Creating user ratings data...\n')
 
 np.random.seed(42)
 n_users = 200
@@ -141,7 +141,7 @@ for _ in range(n_ratings):
 ratings_df = pd.DataFrame(ratings_data)
 ratings_df = ratings_df.drop_duplicates(subset=['userId', 'movieId'], keep='last')
 
-print(f'✅ Ratings created!')
+print(f' Ratings created!')
 print(f'\nRatings Shape: {ratings_df.shape}')
 print(f'Unique Users: {ratings_df['userId'].nunique()}')
 print(f'Unique Movies: {ratings_df['movieId'].nunique()}')
@@ -149,7 +149,7 @@ print(f'Unique Movies: {ratings_df['movieId'].nunique()}')
 import pandas as pd
 
 # Merge datasets
-print('🔗 Merging ratings with movie information...\n')
+print(' Merging ratings with movie information...\n')
 
 combined_df = pd.merge(ratings_df, netflix_df, left_on='movieId', right_on='show_id', how='inner')
 
@@ -163,7 +163,7 @@ user_counts = combined_df['userId'].value_counts()
 active_users = user_counts[user_counts >= 3].index
 combined_df = combined_df[combined_df['userId'].isin(active_users)]
 
-print(f'✅ Data prepared!')
+print(f' Data prepared!')
 print(f'\nDataset Shape: {combined_df.shape}')
 print(f'Users: {combined_df['userId'].nunique()}')
 print(f'Movies: {combined_df['movieId'].nunique()}')
@@ -185,7 +185,7 @@ user_movie_matrix = sp.coo_matrix(
      (combined_df['userId'], combined_df['movieId_key']))
 ).tocsr()
 
-print(f'✅ User-Movie Matrix Created!')
+print(f' User-Movie Matrix Created!')
 print(f'Shape: {user_movie_matrix.shape}')
 print(f'Sparsity: {(1 - user_movie_matrix.nnz / (user_movie_matrix.shape[0] * user_movie_matrix.shape[1]))*100:.2f}%')
 
@@ -233,7 +233,7 @@ def collaborative_filtering_recommender(user_id, combined_df, user_movie_matrix,
 
     return rec_df[['movieId', 'title', 'type', 'listed_in', 'score']]
 
-print('✅ Collaborative Filtering Recommender Ready!')
+print(' Collaborative Filtering Recommender Ready!')
 
 """---
 ## SECTION 4: REINFORCEMENT LEARNING RECOMMENDER
@@ -275,7 +275,7 @@ class QLearningAgent:
         '''Get top-N recommendations'''
         return np.argsort(self.q_table)[::-1][:n]
 
-print('✅ Q-Learning Agent Ready!')
+print(' Q-Learning Agent Ready!')
 
 # Select test user
 test_user_id = combined_df['userId'].sample(1).values[0]
@@ -288,7 +288,7 @@ print(f'Movies watched: {len(user_ratings_dict)}')
 print(f'Average rating: {np.mean(list(user_ratings_dict.values())):.2f}/5.0')
 
 # Initialize and train agent
-print('🤖 Training Q-Learning Agent...\n')
+print(' Training Q-Learning Agent...\n')
 
 agent = QLearningAgent(n_movies=len(movies_list), learning_rate=0.1,
                       discount_factor=0.9, epsilon=0.2)
@@ -318,7 +318,7 @@ for episode in range(num_episodes):
         avg = np.mean(episode_rewards[-10:])
         print(f'Episode {episode + 1}/{num_episodes} - Avg Reward: {avg:.2f}')
 
-print('\n✅ Training Complete!')
+print('\n Training Complete!')
 
 # Plot training progress
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -490,43 +490,4 @@ axes[2].grid(axis='x', alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-print('✅ Visualization complete!')
-
-"""---
-## SECTION 8: SUMMARY
----
-"""
-
-print('''
-╔════════════════════════════════════════════════════════════════════════╗
-║      NETFLIX MOVIE RECOMMENDATION SYSTEM - SUMMARY                   ║
-╚════════════════════════════════════════════════════════════════════════╝
-
-✅ SYSTEM COMPONENTS:
-
-1. KNOWLEDGE-BASED RECOMMENDER
-   - Finds users with similar kaggle kernels output muhammadhananasghar/imdb-movies-content-based-recomendation-system -p /path/to/dest patterns
-   - Recommends movies they rated highly
-   - Method: Collaborative Filtering + Cosine Similarity
-
-2. REINFORCEMENT LEARNING RECOMMENDER
-   - Trains Q-Learning agent on user kaggle kernels output muhammadhananasghar/imdb-movies-content-based-recomendation-system -p /path/to/dests
-   - Balances exploration (new movies) vs exploitation (quality)
-   - Method: Q-Learning with Epsilon-Greedy Policy
-
-3. HYBRID APPROACH
-   - Combines both methods with weighted scores
-   - 40% Knowledge-Based + 60% Reinforcement Learning
-   - Delivers balanced, high-quality recommendations
-
-🚀 READY FOR USE:
-   - Modify test_user_id to any user in the system
-   - Adjust KB/RL weights for different use cases
-   - Retrain RL agent with new user data
-
-📊 NEXT STEPS:
-   - Add content-based filtering (genres, metadata)
-   - Implement deep learning models
-   - Add user feedback loop
-   - Deploy to production
-''')
+print(' Visualization complete!')
